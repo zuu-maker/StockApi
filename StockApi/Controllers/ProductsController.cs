@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using StockApi.Dtos;
 using StockApi.Modals;
 using StockApi.Services;
 
@@ -22,7 +23,26 @@ namespace StockApi.Controllers
             var result = await service.GetProductAsync(id);
             return Ok(result);
         }
-        //oublic async Task<ActionResuk
-        //    >
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> deleteProduct(int id)
+        {
+            var result = await service.DeleteProductAsync(id);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Product>> addProduct(ProductCreateDto newProduct)
+        {
+            var result = await service.AddProductAsync(newProduct);
+            return Ok(result);
+        }
+        [HttpPut("{id}")]
+        public async Task<ActionResult<bool>> updateProduct(int id, ProductUpdateDto product)
+        {
+            var result = await service.UpdateProductAsync(id, product);
+            return Ok(result);
+        }
+        
     }
 }
