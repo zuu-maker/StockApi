@@ -68,7 +68,6 @@ namespace StockApi.Services
             foundStockLine.RemainngServingsWhole = stockLine.RemainngServingsWhole;
             foundStockLine.SellingPrice = stockLine.SellingPrice;
             foundStockLine.LineValue = stockLine.LineValue;
-            foundStockLine.CreatedAt = stockLine.CreatedAt;
 
 
 

@@ -42,6 +42,5 @@
 
         public float SellingPrice { get; set; }
         public float LineValue { get; set; }
-        public string CreatedAt { get; set; } = string.Empty;
     }
 }
