@@ -11,6 +11,8 @@ namespace StockApi.Services
         Task<Session> AddSessionAsync(SessionCreateDto newSession);
         Task<bool> UpdateSessionAsync(int id,SessionUpdateDto session);
         Task<bool> DeleteSessionAsync(int id);
+        Task<bool> LockSessionAsync(int id);
+        Task<List<Session>> GetMySessionsAsync(string username);
 
     }
 }

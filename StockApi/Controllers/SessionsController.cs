@@ -18,6 +18,13 @@ namespace StockApi.Controllers
             var sessions = await service.GetSessionsAsync();
             return Ok(sessions);
         }
+        
+        [HttpGet("my-sessions/{username}")]
+        public async Task<ActionResult<List<Session>>> GetMySessions(string username)
+        {
+            var sessions = await service.GetMySessionsAsync(username);
+            return Ok(sessions);
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Session>> GetSession(int id)
@@ -52,5 +59,13 @@ namespace StockApi.Controllers
             var result = await service.UpdateSessionAsync(id, session);
             return Ok(result);
         }
-     }
+
+        [HttpGet("lock/{id}")]
+        public async Task<ActionResult<bool>> LockSessino(int id)
+        {
+            var result = await service.LockSessionAsync(id);
+            return Ok(result);
+        }
+
+    }
 }

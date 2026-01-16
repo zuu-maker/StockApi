@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using StockApi.Dtos;
 using StockApi.Modals;
 using VidepGame.Data;
@@ -12,6 +13,12 @@ namespace StockApi.Services
         {
             return await context.sessions.ToListAsync();
         }
+
+        public async Task<List<Session>> GetMySessionsAsync(string username)
+        {
+            var sessions = await context.sessions.Where(s => s.Username == username).ToListAsync();
+            return sessions;
+        }
         public async Task<Session?> GetSessionAsync(int id)
         {
             var foundSession = await context.sessions.FindAsync(id);
@@ -20,6 +27,13 @@ namespace StockApi.Services
         }
         public async Task<Session> AddSessionAsync(SessionCreateDto session)
         {
+            // for jerry rigging let usrname just be emploeid
+            var openSession = await context.sessions.Where(s => s.Username == session.Username && s.Locked == false).FirstOrDefaultAsync();
+
+            if(openSession is not null){
+                return openSession;
+            }
+       
             var newSession = new Session
             {
                 SessionDate = session.SessionDate,
@@ -61,6 +75,20 @@ namespace StockApi.Services
             foundSession.ExportedAt = session.ExportedAt;
             foundSession.Locked = session.Locked;
 
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> LockSessionAsync(int id)
+        {
+            var foundSession = await context.sessions.FindAsync(id);
+
+            if(foundSession is null)
+            {
+                return false;
+            }
+
+            foundSession.Locked = true;
             await context.SaveChangesAsync();
             return true;
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using StockApi.Dtos;
 using StockApi.Modals;
 using System.Security.Cryptography.X509Certificates;
@@ -12,20 +13,39 @@ namespace StockApi.Services
 
         public async Task<StockLine> AddStockLineAsync(StockLineCreateDto stockLine)
         {
+
+            var foundProduct = await context.products.FindAsync(stockLine.ProductId);
+
+            if(foundProduct is null)
+            {
+                throw new Exception("Product not found");
+            }
+            // 2. RUN THE CALCULATOR NOW
+            var result = Calculator.Calculate(
+                foundProduct.UnitMl,
+                foundProduct.TareWeightG,
+                stockLine.FullGrossG,
+                stockLine.CurrentGrossG,
+                20,
+                foundProduct.LossAllowance
+            );
+
+            Console.WriteLine(result);
+
             var newStockLine = new StockLine
             {
                 SessionId = stockLine.SessionId,
                 ProductId = stockLine.ProductId,
                 ProductionName = stockLine.ProductionName,
-                ProductUnitMl = stockLine.ProductUnitMl,
+                ProductUnitMl = foundProduct.UnitMl,
                 UnitOfMeasure = stockLine.UnitOfMeasure,
                 FullGrossG = stockLine.FullGrossG,
                 CurrentGrossG = stockLine.CurrentGrossG,
-                RemainingVolumeMl = stockLine.RemainingVolumeMl,
-                RemainingServingsExact = stockLine.RemainingServingsExact,
-                RemainngServingsWhole = stockLine.RemainngServingsWhole,
-                SellingPrice = stockLine.SellingPrice,
-                LineValue = stockLine.LineValue,
+                RemainingVolumeMl = result.RemainingMl,
+                RemainingServingsExact = result.ExactShots,
+                RemainngServingsWhole = result.WholeShots,
+                SellingPrice = foundProduct.SellingPrice,
+                LineValue = result.WholeShots * foundProduct.SellingPrice,
                 CreatedAt = stockLine.CreatedAt
             };
 
@@ -37,6 +57,12 @@ namespace StockApi.Services
         public async Task<List<StockLine>> GetStockLinesAsync()
         {
             var stockLines = await  context.stockLines.ToListAsync();
+            return stockLines;
+        }
+
+        public async Task<List<StockLine>> GetMyStockLines(int sessionId)
+        {
+            var stockLines = await context.stockLines.Where(sl => sl.SessionId == sessionId).ToListAsync();
             return stockLines;
         }
 

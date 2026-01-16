@@ -25,6 +25,13 @@ namespace StockApi.Controllers
             return Ok(stockLine);
         }
 
+        [HttpGet("my-stocklines/{sessionId}")]
+        public async Task<ActionResult<StockLine>> GetMyStockLines(int sessionId)
+        {
+            var myStockLines = await service.GetMyStockLines(sessionId);
+            return Ok(myStockLines);
+        }
+
         [HttpPost]
         public async Task<ActionResult<StockLine>> addStockLine(StockLineCreateDto newStockLine)
         {

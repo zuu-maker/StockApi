@@ -302,5 +302,30 @@ namespace StockApi.Controllers
             return NoContent();
         }
 
+        [HttpGet("stats/summary")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<object>> GetUserStats()
+        {
+            var totalUsers = await context.users.CountAsync();
+            var activeUsers = await context.users.CountAsync(u => u.IsActive);
+            var inactiveUsers = totalUsers - activeUsers;
+
+            var usersByType = await context.users
+                .GroupBy(u => u.EmployeeType)
+                .Select(g => new { EmployeeType = g.Key, Count = g.Count() })
+                .ToListAsync();
+
+            return Ok(new
+            {
+                totalUsers,
+                activeUsers,
+                inactiveUsers,
+                usersByType
+            });
+        }
+
+       
     }
+
 }
+

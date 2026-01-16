@@ -9,16 +9,16 @@
         public int ProductUnitMl { get; set; }
         public int UnitOfMeasure { get; set; }
 
-        public float FullGrossG {  get; set; }
+        public double FullGrossG {  get; set; }
 
-        public float CurrentGrossG { get; set; }
+        public double CurrentGrossG { get; set; }
 
-        public float RemainingVolumeMl { get; set; }
-        public float RemainingServingsExact { get; set; }
+        public double RemainingVolumeMl { get; set; }
+        public double RemainingServingsExact { get; set; }
         public int RemainngServingsWhole { get; set; }
 
-        public float SellingPrice { get; set; }
-        public float LineValue { get; set; }
+        public double SellingPrice { get; set; }
+        public double LineValue { get; set; }
         public string CreatedAt { get; set; } = string.Empty;
 
 

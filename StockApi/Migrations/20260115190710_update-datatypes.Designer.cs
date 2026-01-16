@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VidepGame.Data;
 
@@ -11,9 +12,11 @@ using VidepGame.Data;
 namespace StockApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260115190710_update-datatypes")]
+    partial class updatedatatypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,14 +98,14 @@ namespace StockApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("CurrentGrossG")
-                        .HasColumnType("float");
+                    b.Property<float>("CurrentGrossG")
+                        .HasColumnType("real");
 
-                    b.Property<double>("FullGrossG")
-                        .HasColumnType("float");
+                    b.Property<float>("FullGrossG")
+                        .HasColumnType("real");
 
-                    b.Property<double>("LineValue")
-                        .HasColumnType("float");
+                    b.Property<float>("LineValue")
+                        .HasColumnType("real");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -114,17 +117,17 @@ namespace StockApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("RemainingServingsExact")
-                        .HasColumnType("float");
+                    b.Property<float>("RemainingServingsExact")
+                        .HasColumnType("real");
 
-                    b.Property<double>("RemainingVolumeMl")
-                        .HasColumnType("float");
+                    b.Property<float>("RemainingVolumeMl")
+                        .HasColumnType("real");
 
                     b.Property<int>("RemainngServingsWhole")
                         .HasColumnType("int");
 
-                    b.Property<double>("SellingPrice")
-                        .HasColumnType("float");
+                    b.Property<float>("SellingPrice")
+                        .HasColumnType("real");
 
                     b.Property<int>("SessionId")
                         .HasColumnType("int");
